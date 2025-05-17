@@ -25,8 +25,56 @@ class TeacherDashboardApp extends StatelessWidget {
   }
 }
 
-class TeacherDashboardScreen extends StatelessWidget {
+class TeacherDashboardScreen extends StatefulWidget {
   const TeacherDashboardScreen({super.key});
+
+  @override
+  State<TeacherDashboardScreen> createState() => _TeacherDashboardScreenState();
+}
+
+class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
+  final PageController _notificationController = PageController(initialPage: 0);
+  int _currentNotificationIndex = 0;
+
+  final List<NotificationItem> _notifications = [
+    NotificationItem(
+      message: 'You have received a new announcement',
+      date: '23rd May, 2024',
+      tag: 'New',
+      tagColor: Colors.blue,
+    ),
+    NotificationItem(
+      message: 'Staff meeting scheduled for tomorrow',
+      date: '24th May, 2024',
+      tag: 'Important',
+      tagColor: Colors.orange,
+    ),
+    NotificationItem(
+      message: 'Submit student marks by Friday',
+      date: '25th May, 2024',
+      tag: 'Urgent',
+      tagColor: Colors.red,
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Add listener to update current page index
+    _notificationController.addListener(() {
+      if (_notificationController.page?.round() != _currentNotificationIndex) {
+        setState(() {
+          _currentNotificationIndex = _notificationController.page!.round();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _notificationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +162,8 @@ class TeacherDashboardScreen extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.network(
-                            '/api/placeholder/40/40',
+                          child: Image.asset(
+                            'assets/images/teacher.png',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -178,8 +226,8 @@ class TeacherDashboardScreen extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          '/api/placeholder/100/100',
+                        child: Image.asset(
+                          'assets/images/teacher.png',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -221,52 +269,70 @@ class TeacherDashboardScreen extends StatelessWidget {
                 ),
               ),
 
-              // Notification Banner
+              // Notification Carousel
               Container(
+                height: 80,
                 margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                child: PageView.builder(
+                  controller: _notificationController,
+                  itemCount: _notifications.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
                         children: [
-                          Text(
-                            'You have received a new announcement',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _notifications[index].message,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  _notifications[index].date,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Text(
-                            '23rd May, 2024',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: _notifications[index].tagColor,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              _notifications[index].tag,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Text(
-                        'New',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
 
@@ -275,14 +341,14 @@ class TeacherDashboardScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < 3; i++)
+                  for (int i = 0; i < _notifications.length; i++)
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: i == 0 ? const Color(0xFFB01C33) : Colors.grey[300],
+                        color: i == _currentNotificationIndex ? const Color(0xFFB01C33) : Colors.grey[300],
                       ),
                     ),
                 ],
@@ -373,4 +439,18 @@ class TeacherDashboardScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class NotificationItem {
+  final String message;
+  final String date;
+  final String tag;
+  final Color tagColor;
+
+  NotificationItem({
+    required this.message,
+    required this.date,
+    required this.tag,
+    required this.tagColor,
+  });
 }
