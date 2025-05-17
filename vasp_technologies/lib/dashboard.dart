@@ -78,6 +78,16 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsiveness
+    final Size screenSize = MediaQuery.of(context).size;
+    final double screenWidth = screenSize.width;
+    final double screenHeight = screenSize.height;
+
+    // Calculate responsive sizes
+    final double profileImageSize = screenWidth * 0.4;
+    final double menuItemPadding = screenWidth * 0.02;
+    final double menuIconSize = screenWidth * 0.06;
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -108,25 +118,28 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             children: [
               // Header section
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                padding: EdgeInsets.symmetric(
+                    vertical: screenHeight * 0.03,
+                    horizontal: screenWidth * 0.04
+                ),
                 width: double.infinity,
                 color: Colors.white,
                 child: Column(
                   children: [
                     // App logo or school logo
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(screenWidth * 0.03),
                       decoration: BoxDecoration(
                         color: const Color(0xFFF5F5F5),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
                         Icons.school,
-                        size: 42,
+                        size: screenWidth * 0.1,
                         color: const Color(0xFFB01C33),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: screenHeight * 0.02),
                     const Text(
                       'Teacher Dashboard',
                       style: TextStyle(
@@ -135,7 +148,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                         color: Color(0xFFB01C33),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: screenHeight * 0.01),
                     const Divider(),
                   ],
                 ),
@@ -166,7 +179,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
 
               // Profile and logout section
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(screenWidth * 0.04),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -185,8 +198,8 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                       child: Row(
                         children: [
                           Container(
-                            width: 48,
-                            height: 48,
+                            width: screenWidth * 0.12,
+                            height: screenWidth * 0.12,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -195,14 +208,14 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                               ),
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(screenWidth * 0.06),
                               child: Image.asset(
                                 'assets/images/teacher.png',
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: screenWidth * 0.03),
                           Flexible(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,11 +256,11 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(8),
-                          child: const Icon(
+                          padding: EdgeInsets.all(screenWidth * 0.02),
+                          child: Icon(
                             Icons.logout,
-                            color: Color(0xFFB01C33),
-                            size: 24,
+                            color: const Color(0xFFB01C33),
+                            size: screenWidth * 0.06,
                           ),
                         ),
                       ),
@@ -259,199 +272,250 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
           ),
         ),
       ),
-      body: Builder(
-        builder: (BuildContext context) {
-          return Column(
-            children: [
-              // Profile Card
-              Container(
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  clipBehavior: Clip.none,
-                  children: [
-                    Column(
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: Column(
+                children: [
+                  // Profile Card
+                  Container(
+                    margin: EdgeInsets.all(screenWidth * 0.04),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      clipBehavior: Clip.none,
                       children: [
-                        const SizedBox(height: 100), // Reduced space at top to account for overlapping image
-                        // Name and Designation section
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.only(top: 100, bottom: 12), // Added padding at top for image overlap
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFB01C33),
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12),
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12),
+                        Column(
+                          children: [
+                            SizedBox(height: screenHeight * 0.1), // Reduced space at top for overlapping image
+                            // Name and Designation section
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.only(
+                                  top: profileImageSize * 0.58,
+                                  bottom: screenHeight * 0.015
+                              ),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFB01C33),
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'D. K Sharma',
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.045,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(height: screenHeight * 0.005),
+                                  Text(
+                                    'Teacher (Economics)',
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.035,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          child: const Column(
-                            children: [
-                              Text(
-                                'D. K Sharma',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                          ],
+                        ),
+                        // Profile Image - positioned to overlap
+                        Positioned(
+                          top: screenHeight * 0.01,
+                          child: Container(
+                            width: profileImageSize,
+                            height: profileImageSize,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: const Color(0xFFB01C33),
+                                width: 2,
                               ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Teacher (Economics)',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                'assets/images/teacher.png',
+                                fit: BoxFit.cover,
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    // Profile Image - positioned to overlap
-                    Positioned(
-                      top: 10,
-                      child: Container(
-                        width: 180,
-                        height: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: const Color(0xFFB01C33),
-                            width: 2,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'assets/images/teacher.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
 
-              // Notification Carousel
-              Container(
-                height: 80,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: PageView.builder(
-                  controller: _notificationController,
-                  itemCount: _notifications.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
+                  // Notification Carousel
+                  Container(
+                    height: screenHeight * 0.1,
+                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                    child: PageView.builder(
+                      controller: _notificationController,
+                      itemCount: _notifications.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.04,
+                              vertical: screenHeight * 0.01
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _notifications[index].message,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Text(
-                                  _notifications[index].date,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: _notifications[index].tagColor,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              _notifications[index].tag,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-
-              // Dots indicator
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int i = 0; i < _notifications.length; i++)
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: i == _currentNotificationIndex ? const Color(0xFFB01C33) : Colors.grey[300],
-                      ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      _notifications[index].message,
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.035,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
+                                    Text(
+                                      _notifications[index].date,
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.03,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: screenWidth * 0.02,
+                                    vertical: screenHeight * 0.003
+                                ),
+                                decoration: BoxDecoration(
+                                  color: _notifications[index].tagColor,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  _notifications[index].tag,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth * 0.03,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
+                  ),
+
+                  // Dots indicator
+                  SizedBox(height: screenHeight * 0.015),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (int i = 0; i < _notifications.length; i++)
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                          width: screenWidth * 0.02,
+                          height: screenWidth * 0.02,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: i == _currentNotificationIndex ? const Color(0xFFB01C33) : Colors.grey[300],
+                          ),
+                        ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.03),
+
+                  // Grid Menu - adaptive grid based on screen size
+                  GridView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: _getGridCrossAxisCount(screenWidth),
+                      mainAxisSpacing: screenHeight * 0.02,
+                      crossAxisSpacing: screenWidth * 0.04,
+                      childAspectRatio: _getChildAspectRatio(screenWidth),
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 9,
+                    itemBuilder: (context, index) {
+                      // List of menu items
+                      final List<Map<String, dynamic>> menuItems = [
+                        {'icon': Icons.access_time_filled, 'title': 'Attendance'},
+                        {'icon': Icons.exit_to_app, 'title': 'Leave'},
+                        {'icon': Icons.people, 'title': 'Compensation'},
+                        {'icon': Icons.schedule, 'title': 'Timetable'},
+                        {'icon': Icons.assignment, 'title': 'Task'},
+                        {'icon': Icons.star, 'title': 'Marks Entry'},
+                        {'icon': Icons.description, 'title': 'Syllabus'},
+                        {'icon': Icons.book, 'title': 'Library'},
+                        {'icon': Icons.contacts, 'title': 'Contact Info'},
+                      ];
+
+                      return _buildMenuItem(
+                          icon: menuItems[index]['icon'],
+                          title: menuItems[index]['title'],
+                          color: const Color(0xFFB01C33),
+                          iconSize: menuIconSize,
+                          padding: menuItemPadding
+                      );
+                    },
+                  ),
+                  // Add padding at the bottom for better scrolling experience
+                  SizedBox(height: screenHeight * 0.02),
                 ],
               ),
-              const SizedBox(height: 24),
-
-              // Grid Menu
-              Expanded(
-                child: GridView.count(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  shrinkWrap: true,
-                  children: [
-                    _buildMenuItem(icon: Icons.access_time_filled, title: 'Attendance', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.exit_to_app, title: 'Leave', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.people, title: 'Compensation', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.schedule, title: 'Timetable', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.assignment, title: 'Task', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.star, title: 'Marks Entry', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.description, title: 'Syllabus', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.book, title: 'Library', color: const Color(0xFFB01C33)),
-                    _buildMenuItem(icon: Icons.contacts, title: 'Contact Info', color: const Color(0xFFB01C33)),
-                  ],
-                ),
-              ),
-            ],
+            ),
           );
         },
       ),
     );
+  }
+
+  // Helper method to determine grid cross axis count based on screen width
+  int _getGridCrossAxisCount(double width) {
+    if (width > 600) {
+      return 4; // Tablets and larger devices
+    } else if (width > 400) {
+      return 3; // Medium-sized phones
+    } else {
+      return 2; // Small phones
+    }
+  }
+
+  // Helper method to determine child aspect ratio based on screen width
+  double _getChildAspectRatio(double width) {
+    if (width > 600) {
+      return 1.2; // Tablets and larger devices
+    } else if (width > 400) {
+      return 1.0; // Medium-sized phones
+    } else {
+      return 0.9; // Small phones
+    }
   }
 
   Widget _buildDrawerCategory(String title) {
@@ -501,7 +565,13 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     );
   }
 
-  Widget _buildMenuItem({required IconData icon, required String title, required Color color}) {
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    required Color color,
+    required double iconSize,
+    required double padding
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -518,7 +588,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(padding),
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
@@ -527,18 +597,19 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             child: Icon(
               icon,
               color: color,
-              size: 24,
+              size: iconSize,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             title,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: iconSize * 0.5,
               color: color,
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
