@@ -101,101 +101,162 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
         ],
       ),
       drawer: Drawer(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 50, bottom: 20),
-              width: double.infinity,
-              color: const Color(0xFFB01C33),
-              child: const Column(
-                children: [
-                  Text(
-                    'Teacher Dashboard',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+        elevation: 2.0,
+        backgroundColor: Colors.white,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header section
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                width: double.infinity,
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    // App logo or school logo
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.school,
+                        size: 42,
+                        color: const Color(0xFFB01C33),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  _buildDrawerItem(context, Icons.access_time_filled, 'Attendance'),
-                  _buildDrawerItem(context, Icons.exit_to_app, 'Leave'),
-                  _buildDrawerItem(context, Icons.people, 'Compensation'),
-                  _buildDrawerItem(context, Icons.schedule, 'Timetable'),
-                  _buildDrawerItem(context, Icons.assignment, 'Task'),
-                  _buildDrawerItem(context, Icons.star, 'Marks Entry'),
-                  _buildDrawerItem(context, Icons.description, 'Syllabus'),
-                  _buildDrawerItem(context, Icons.book, 'Library'),
-                  _buildDrawerItem(context, Icons.contacts, 'Contact Info'),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                border: Border(
-                  top: BorderSide(color: Colors.grey[300]!),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Teacher Dashboard',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFB01C33),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Divider(),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Profile at bottom-left
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFFB01C33),
-                            width: 2,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            'assets/images/teacher.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        'D. K Sharma',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Logout at bottom-right
-                  IconButton(
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Color(0xFFB01C33),
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+
+              // Menu items scrollable section
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    _buildDrawerCategory('Main Menu'),
+                    _buildDrawerItem(context, Icons.access_time_filled, 'Attendance'),
+                    _buildDrawerItem(context, Icons.exit_to_app, 'Leave'),
+                    _buildDrawerItem(context, Icons.people, 'Compensation'),
+
+                    _buildDrawerCategory('Academics'),
+                    _buildDrawerItem(context, Icons.schedule, 'Timetable'),
+                    _buildDrawerItem(context, Icons.assignment, 'Task'),
+                    _buildDrawerItem(context, Icons.star, 'Marks Entry'),
+                    _buildDrawerItem(context, Icons.description, 'Syllabus'),
+
+                    _buildDrawerCategory('Resources'),
+                    _buildDrawerItem(context, Icons.book, 'Library'),
+                    _buildDrawerItem(context, Icons.contacts, 'Contact Info'),
+                  ],
+                ),
               ),
-            ),
-          ],
+
+              // Profile and logout section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Profile at bottom-left
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: const Color(0xFFB01C33),
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: Image.asset(
+                                'assets/images/teacher.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'D. K Sharma',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  'Economics Teacher',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Logout at bottom-right
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(50),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: const Icon(
+                            Icons.logout,
+                            color: Color(0xFFB01C33),
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Builder(
@@ -210,59 +271,69 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey.shade300),
                 ),
-                child: Column(
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  clipBehavior: Clip.none,
                   children: [
-                    const SizedBox(height: 20),
-                    // Profile Image
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: const Color(0xFFB01C33),
-                          width: 2,
+                    Column(
+                      children: [
+                        const SizedBox(height: 100), // Reduced space at top to account for overlapping image
+                        // Name and Designation section
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(top: 100, bottom: 12), // Added padding at top for image overlap
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFB01C33),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(12),
+                              bottomRight: Radius.circular(12),
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
+                            ),
+                          ),
+                          child: const Column(
+                            children: [
+                              Text(
+                                'D. K Sharma',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Teacher (Economics)',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          'assets/images/teacher.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    // Name and Designation
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFB01C33),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(12),
-                          bottomRight: Radius.circular(12),
+                    // Profile Image - positioned to overlap
+                    Positioned(
+                      top: 10,
+                      child: Container(
+                        width: 180,
+                        height: 180,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: const Color(0xFFB01C33),
+                            width: 2,
+                          ),
                         ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Text(
-                            'D. K Sharma',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'assets/images/teacher.png',
+                            fit: BoxFit.cover,
                           ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Teacher (Economics)',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
@@ -383,15 +454,49 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     );
   }
 
+  Widget _buildDrawerCategory(String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey[600],
+          letterSpacing: 0.5,
+        ),
+      ),
+    );
+  }
+
   Widget _buildDrawerItem(BuildContext context, IconData icon, String title) {
     return ListTile(
-      leading: Icon(
-        icon,
-        color: const Color(0xFFB01C33),
+      dense: true,
+      horizontalTitleGap: 12,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(
+          icon,
+          color: const Color(0xFFB01C33),
+          size: 20,
+        ),
       ),
-      title: Text(title),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       onTap: () {
+        // Close the drawer
         Navigator.pop(context);
+        // Add your navigation logic here
       },
     );
   }
