@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'main.dart';
 
-void main() {
-  runApp(const TeacherDashboardApp());
-}
-
 class TeacherDashboardApp extends StatelessWidget {
   const TeacherDashboardApp({super.key});
 
