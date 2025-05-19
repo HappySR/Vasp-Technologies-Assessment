@@ -2,25 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'main.dart';
 
-class TeacherDashboardApp extends StatelessWidget {
-  const TeacherDashboardApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: const Color(0xFFB01C33),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFB01C33),
-          primary: const Color(0xFFB01C33),
-        ),
-      ),
-      home: LoginScreen(),
-    );
-  }
-}
-
 class TeacherDashboardScreen extends StatefulWidget {
   const TeacherDashboardScreen({super.key});
 
